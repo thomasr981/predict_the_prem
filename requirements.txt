@@ -1,0 +1,9 @@
+shiny==1.4.0
+shinywidgets==0.7.0
+pandas==2.2.2
+numpy==1.26.4
+plotly==6.2.0
+requests==2.32.4
+Jinja2==3.0.1
+htmltools===0.6.0
+typing-extensions==4.14.1
