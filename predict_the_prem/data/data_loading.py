@@ -1,10 +1,13 @@
-import os, requests
-from typing import Dict
+import os
 from pathlib import Path
+from typing import Dict
 
 import pandas as pd
+import requests
 
 BASE_URL = "https://fantasy.premierleague.com/api/"
+DATA_DIRECTORY_PATH = Path(__file__).parent
+
 
 def get_fixtures_df() -> pd.DataFrame:
     renaming_dict = {
@@ -31,6 +34,7 @@ def get_fixtures_df() -> pd.DataFrame:
     fixtures_df = pd.DataFrame(fixtures_response.json())
     return fixtures_df.rename(columns=renaming_dict)[list(renaming_dict.values())]
 
+
 def get_teams_df() -> pd.DataFrame:
     renaming_dict = {
         "code": "global_team_id",
@@ -51,3 +55,15 @@ def get_teams_df() -> pd.DataFrame:
     bootstrap_response = requests.get(bootstrap_url)
     teams_df = pd.DataFrame(bootstrap_response.json()["teams"])
     return teams_df.rename(columns=renaming_dict)[list(renaming_dict.values())]
+
+
+def get_entries() -> Dict[str, pd.DataFrame]:
+    directory = os.path.join(DATA_DIRECTORY_PATH, "entries/")
+    entries = {}
+    for file in os.listdir(directory):
+        filename = os.fsdecode(file)
+        if filename.endswith(".csv"):
+            new_entry_df = pd.read_csv(os.path.join(directory, filename))
+            new_entry_name = "_".join(filename[:-4].split("_")[1:])
+            entries[new_entry_name] = new_entry_df
+    return dict(entries.items())
