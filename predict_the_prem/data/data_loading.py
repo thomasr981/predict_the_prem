@@ -32,7 +32,20 @@ def get_fixtures_df() -> pd.DataFrame:
     fixtures_url = os.path.join(BASE_URL, "fixtures/")
     fixtures_response = requests.get(fixtures_url)
     fixtures_df = pd.DataFrame(fixtures_response.json())
-    return fixtures_df.rename(columns=renaming_dict)[list(renaming_dict.values())]
+    fixtures_df = fixtures_df.rename(columns=renaming_dict)[
+        list(renaming_dict.values())
+    ]
+    fixtures_df["match_start_time"] = pd.to_datetime(fixtures_df["match_start_time"])
+    fixtures_df["match_start_time"] = (
+        fixtures_df["match_start_time"]
+        .dt.tz_convert("Europe/London")
+        .dt.tz_localize(None)
+    )
+    fixtures_df["match_start_date"] = fixtures_df["match_start_time"].dt.date
+    fixtures_df["match_start_time_short"] = (
+        fixtures_df["match_start_time"].dt.time.astype(str).str[:5]
+    )
+    return fixtures_df
 
 
 def get_teams_df() -> pd.DataFrame:

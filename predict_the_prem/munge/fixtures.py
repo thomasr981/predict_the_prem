@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from predict_the_prem.constants import TEAM_BADGES
+
 
 def merge_fixtures_and_teams(
     fixtures_df: pd.DataFrame, teams_df: pd.DataFrame
@@ -17,6 +19,8 @@ def merge_fixtures_and_teams(
         fixtures_df = fixtures_df.merge(
             home_away_teams_df, how="left", on=[f"{home_away}_team_id"]
         )
+    fixtures_df["home_team_badge"] = fixtures_df["home_team_name"].map(TEAM_BADGES)
+    fixtures_df["away_team_badge"] = fixtures_df["away_team_name"].map(TEAM_BADGES)
     return fixtures_df
 
 

@@ -1,10 +1,12 @@
+import pandas as pd
 from shiny import App, reactive, render, ui
 from shinywidgets import render_plotly
 
 from predict_the_prem.data.data_loading import get_fixtures_df, get_teams_df
-from predict_the_prem.display.plotting.league_table import create_league_table_html
-from predict_the_prem.display.plotting.team_position_vs_game_week import (
-    plot_team_position_vs_game_week,
+from predict_the_prem.display.plotting import plot_team_position_vs_game_week
+from predict_the_prem.display.tables import (
+    create_fixture_table_html,
+    create_league_table_html,
 )
 from predict_the_prem.munge import (
     get_league_table_df,
@@ -22,11 +24,19 @@ app_ui = ui.page_fluid(
 
 
 def server(input, output, session):
-    logged_in = reactive.Value(False)
+    logged_in = reactive.Value(True)
     login_message_text = reactive.Value("")
 
     fixtures_df = get_fixtures_df()
     teams_df = get_teams_df()
+
+    # TODO: Use this to update results & fixtures shown
+    current_game_week = reactive.Value(  # NOQA: F841
+        fixtures_df[
+            fixtures_df["match_start_time"]
+            >= pd.Timestamp.now(tz="Europe/London").strftime("%Y-%m-%d")
+        ]
+    )
 
     fixtures_df = merge_fixtures_and_teams(fixtures_df=fixtures_df, teams_df=teams_df)
     team_fixtures_df = get_team_fixtures_df(fixtures_df=fixtures_df)
@@ -84,6 +94,11 @@ def server(input, output, session):
         return plot_team_position_vs_game_week(
             team_position_vs_game_week_df=team_position_vs_game_week_df
         )
+
+    @output
+    @render.ui
+    def fixtures_and_results_table():
+        return ui.HTML(create_fixture_table_html(fixtures_df=fixtures_df, game_week=1))
 
 
 app = App(ui=app_ui, server=server)
