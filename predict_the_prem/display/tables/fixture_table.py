@@ -13,11 +13,12 @@ def create_fixture_table_html(fixtures_df: pd.DataFrame, game_week: int) -> str:
     table {
         width: auto;
         border-collapse: collapse;
-        font-family: Arial, sans-serif;
+        font-family: Helvetica, sans-serif;
     }
 
     td {
-        font-size: 16px;
+        font-size: 12px;
+        font-weight: 575;
         color: #37003c;
         background-color: #ffffff;
     }
@@ -27,8 +28,8 @@ def create_fixture_table_html(fixtures_df: pd.DataFrame, game_week: int) -> str:
     }
 
     td.fixture-and-results-table-col-date {
-        width: 300px;
-        font-size: 20px;
+        width: 200px;
+        font-size: 16px;
         font-weight: bold;
     }
 
@@ -37,12 +38,12 @@ def create_fixture_table_html(fixtures_df: pd.DataFrame, game_week: int) -> str:
     }
 
     td.fixture-and-results-table-col-badge {
-        width: 30px;
+        width: 24px;
     }
 
     td.fixture-and-results-table-col-time {
-        width: 60px;
-        font-size: 18px;
+        width: 50px;
+        font-size: 16px;
         font-weight: bold;
     }
 
@@ -69,9 +70,9 @@ def create_fixture_table_html(fixtures_df: pd.DataFrame, game_week: int) -> str:
                 <tr>
                     <td class="fixture-and-results-table-col-date"></td>
                     <td class="fixture-and-results-table-col-name" style="text-align: right">{fixture['home_team_name']}</td>
-                    <td class="fixture-and-results-table-col-badge"><img src="{fixture['home_team_badge']}" width="30px"></td>
+                    <td class="fixture-and-results-table-col-badge" style="text-align: center;"><img src="{fixture['home_team_badge']}" width="24px"></td>
                     <td class="fixture-and-results-table-col-time" style="text-align: center">{fixture['match_start_time_short']}</td>
-                    <td class="fixture-and-results-table-col-badge"><img src="{fixture['away_team_badge']}" width="30px"></td>
+                    <td class="fixture-and-results-table-col-badge" style="text-align: center;"><img src="{fixture['away_team_badge']}" width="24px"></td>
                     <td class="fixture-and-results-table-col-name" style="text-align: left">{fixture['away_team_name']}</td>
                     <td class="fixture-and-results-table-col-date"></td>
                 </tr>
