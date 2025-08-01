@@ -55,14 +55,7 @@ fixtures_and_resuts_ui = ui.nav_panel(
                     style="margin-right: 20px;",
                     disabled=False,
                 ),
-                ui.HTML(
-                    """
-                    <div style="text-align: center; font-family: Arial, sans-serif; margin-right: 20px;">
-                    <div style="font-weight: bold; font-size: 16px; color: #37003c;">Matchweek 1</div>
-                    <div style="font-weight: light; font-size: 14px; color: #7e5981;">Fri 15 Aug - Mon 18 Aug</div>
-                    </div>
-                """
-                ),
+                ui.output_ui("fixtures_and_results_table_title"),
                 ui.input_action_button(
                     "next_game_week_button",
                     ui.HTML(
