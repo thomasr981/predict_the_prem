@@ -3,6 +3,7 @@ import pandas as pd
 
 def create_fixture_table_html(fixtures_df: pd.DataFrame, game_week: int) -> str:
     game_week_fixtures = fixtures_df[fixtures_df["game_week"] == game_week].copy()
+    game_week_fixtures["is_started"].iloc[5] = True
     game_week_fixtures_records = {
         pd.to_datetime(date).strftime("%a %d %b"): group.to_dict(orient="records")
         for date, group in game_week_fixtures.groupby("match_start_date")
@@ -66,12 +67,17 @@ def create_fixture_table_html(fixtures_df: pd.DataFrame, game_week: int) -> str:
             </tr>
         """
         for fixture in fixtures:
+            middle_col = (
+                f"""<td class="fixture-and-results-table-col-time" style="text-align: center">{fixture['match_score']}</td>"""
+                if fixture["is_started"]
+                else f"""<td class="fixture-and-results-table-col-time" style="text-align: center">{fixture['match_start_time_short']}</td>"""
+            )
             html += f"""
                 <tr>
                     <td class="fixture-and-results-table-col-date"></td>
                     <td class="fixture-and-results-table-col-name" style="text-align: right">{fixture['home_team_name']}</td>
                     <td class="fixture-and-results-table-col-badge" style="text-align: center;"><img src="{fixture['home_team_badge']}" width="24px"></td>
-                    <td class="fixture-and-results-table-col-time" style="text-align: center">{fixture['match_start_time_short']}</td>
+                    {middle_col}
                     <td class="fixture-and-results-table-col-badge" style="text-align: center;"><img src="{fixture['away_team_badge']}" width="24px"></td>
                     <td class="fixture-and-results-table-col-name" style="text-align: left">{fixture['away_team_name']}</td>
                     <td class="fixture-and-results-table-col-date"></td>

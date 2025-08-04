@@ -11,6 +11,10 @@ def get_team_position_vs_game_week(team_fixtures_df: pd.DataFrame) -> pd.DataFra
                 team_fixtures_df["game_week"] <= game_week
             ].copy()
         )
+        if (game_week > 1) and (
+            week_league_table_df["matches_played"].max() < game_week
+        ):
+            break
         week_league_table_df = week_league_table_df.set_index("team_name")[
             ["position"]
         ].rename(columns={"position": f"game_week_{game_week}"})
