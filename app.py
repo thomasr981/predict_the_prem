@@ -2,7 +2,11 @@ import pandas as pd
 from shiny import App, reactive, render, ui
 from shinywidgets import render_plotly
 
-from predict_the_prem.data.data_loading import get_fixtures_df, get_teams_df
+from predict_the_prem.data.data_loading import (
+    get_fixtures_df,
+    get_players_df,
+    get_teams_df,
+)
 from predict_the_prem.display.misc import create_fixture_table_title_html
 from predict_the_prem.display.plotting import plot_team_position_vs_game_week
 from predict_the_prem.display.tables import (
@@ -29,7 +33,8 @@ def server(input, output, session):
     logged_in = reactive.Value(True)
     login_message_text = reactive.Value("")
 
-    fixtures_df = get_fixtures_df()
+    players_df = get_players_df()
+    fixtures_df = get_fixtures_df(players_df=players_df)
     teams_df = get_teams_df()
 
     fixtures_df = merge_fixtures_and_teams(fixtures_df=fixtures_df, teams_df=teams_df)
@@ -89,8 +94,8 @@ def server(input, output, session):
             team_position_vs_game_week_df=team_position_vs_game_week_df
         )
 
-    min_game_week = fixtures_df["game_week"].min()
-    max_game_week = fixtures_df["game_week"].max()
+    min_game_week = int(fixtures_df["game_week"].min())
+    max_game_week = int(fixtures_df["game_week"].max())
     fixtures_and_results_game_week = reactive.Value(
         get_current_game_week(fixtures_df=fixtures_df)
     )

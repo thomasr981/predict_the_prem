@@ -33,7 +33,6 @@ def get_fixtures_df(players_df: Optional[pd.DataFrame] = None) -> pd.DataFrame:
         {}
         if players_df is None
         else players_df[["player_id", "player_name"]]
-        .head()
         .set_index("player_id")
         .to_dict()["player_name"]
     )

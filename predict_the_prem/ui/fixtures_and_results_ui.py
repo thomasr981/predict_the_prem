@@ -66,7 +66,10 @@ fixtures_and_resuts_ui = ui.nav_panel(
                 ),
                 style="display: flex; justify-content: center; align-items: center;",
             ),
-            ui.output_ui("fixtures_and_results_table"),
+            ui.tags.div(
+                ui.output_ui("fixtures_and_results_table"),
+                style="display: flex; justify-content: center; align-items: center;",
+            ),
         ),
         full_screen=True,
         style="min-width: 600px; flex-shrink: 0; flex-grow: 1;",
