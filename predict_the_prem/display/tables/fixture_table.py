@@ -41,53 +41,53 @@ def create_fixture_table_html(fixtures_df: pd.DataFrame, game_week: int) -> str:
 
     html = """
     <style>
-    table {
+    #fixtureTable {
         width: 100%;
         border-collapse: collapse;
         font-family: Helvetica, sans-serif;
         margin: auto; /* Center table horizontally */
     }
-    td {
+    #fixtureTable td {
         font-size: 12px;
         font-weight: 575;
         color: #37003c;
         background-color: #ffffff;
     }
-    tr:hover td {
+    #fixtureTable tr:hover td {
         background-color: #f5f5f5 !important;
     }
-    td.fixture-and-results-table-col-date {
+    #fixtureTable td.fixture-and-results-table-col-date {
         width: 200px;
         font-size: 16px;
         font-weight: bold;
         text-align: left;
     }
-    td.fixture-and-results-table-col-name {
+    #fixtureTable td.fixture-and-results-table-col-name {
         width: 150px;
     }
-    td.fixture-and-results-table-col-badge {
+    #fixtureTable td.fixture-and-results-table-col-badge {
         width: 24px;
     }
-    td.fixture-and-results-table-col-time {
+    #fixtureTable td.fixture-and-results-table-col-time {
         width: 50px;
         font-size: 16px;
         font-weight: bold;
         text-align: center;
     }
-    td.fixture-and-results-table-col-events {
+    #fixtureTable td.fixture-and-results-table-col-events {
         width: 150px;
         font-size: 10px;
     }
 
-    .goal-details-content {
+    #fixtureTable .goal-details-content {
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.3s ease;
     }
-    .goal-details.open .goal-details-content {
+    #fixtureTable .goal-details.open .goal-details-content {
         max-height: 50px; /* adjust for scorer row height */
     }
-    .toggle-row {
+    #fixtureTable .toggle-row {
         cursor: pointer;
     }
     </style>

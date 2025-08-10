@@ -12,6 +12,7 @@ from predict_the_prem.display.plotting import plot_team_position_vs_game_week
 from predict_the_prem.display.tables import (
     create_fixture_table_html,
     create_league_table_html,
+    create_player_stat_rank_table_html,
 )
 from predict_the_prem.munge import (
     get_league_table_df,
@@ -94,11 +95,53 @@ def server(input, output, session):
             team_position_vs_game_week_df=team_position_vs_game_week_df
         )
 
-    min_game_week = int(fixtures_df["game_week"].min())
-    max_game_week = int(fixtures_df["game_week"].max())
+    min_game_week = int(fixtures_df["game_week"].min() or 1)
+    max_game_week = int(fixtures_df["game_week"].max() or 1)
     fixtures_and_results_game_week = reactive.Value(
         get_current_game_week(fixtures_df=fixtures_df)
     )
+
+    @output
+    @render.ui
+    def player_top_10_goals_scored():
+        return ui.HTML(
+            create_player_stat_rank_table_html(
+                players_df=players_df,
+                title="Top 10 Goals Scored",
+                table_id="playerGoalsTable",
+                stat_col="goals_scored",
+                sort_cols=["goals_scored", "minutes"],
+                ascending=[False, True],
+            )
+        )
+
+    @output
+    @render.ui
+    def player_top_10_assists():
+        return ui.HTML(
+            create_player_stat_rank_table_html(
+                players_df=players_df,
+                title="Top 10 Assists",
+                table_id="playerAssistsTable",
+                stat_col="assists",
+                sort_cols=["assists", "minutes"],
+                ascending=[False, True],
+            )
+        )
+
+    @output
+    @render.ui
+    def player_top_10_clean_sheets():
+        return ui.HTML(
+            create_player_stat_rank_table_html(
+                players_df=players_df[players_df["position_category_id"] == 1].copy(),
+                title="Top 10 Clean Sheets",
+                table_id="playerCleanSheetsTable",
+                stat_col="clean_sheets",
+                sort_cols=["clean_sheets", "minutes"],
+                ascending=[False, True],
+            )
+        )
 
     @reactive.Effect
     def game_week_buttons():

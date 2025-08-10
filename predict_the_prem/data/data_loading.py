@@ -20,12 +20,22 @@ def get_players_df() -> pd.DataFrame:
     renaming_dict = {
         "code": "global_player_id",
         "id": "player_id",
+        "opta_code": "opta_code",
+        "element_type": "position_category_id",  # 1: GK, 2: DEF, 3: MID, 4: FWD
         "web_name": "player_name",
+        "minutes": "minutes",
+        "goals_scored": "goals_scored",
+        "assists": "assists",
+        "clean_sheets": "clean_sheets",
     }
     bootstrap_url = os.path.join(BASE_URL, "bootstrap-static/")
     bootstrap_response = requests.get(bootstrap_url)
     players_df = pd.DataFrame(bootstrap_response.json()["elements"])
-    return players_df.rename(columns=renaming_dict)[list(renaming_dict.values())]
+    players_df = players_df.rename(columns=renaming_dict)[list(renaming_dict.values())]
+    players_df["player_png"] = players_df["opta_code"].apply(
+        lambda x: f"https://resources.premierleague.com/premierleague/photos/players/110x140/{x}.png"
+    )
+    return players_df
 
 
 def get_fixtures_df(players_df: Optional[pd.DataFrame] = None) -> pd.DataFrame:

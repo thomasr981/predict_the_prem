@@ -1,7 +1,5 @@
 from .team_position_vs_game_week import plot_team_position_vs_game_week
 
 __all__ = [
-    "create_fixture_table_html",
-    "create_league_table_html",
     "plot_team_position_vs_game_week",
 ]
